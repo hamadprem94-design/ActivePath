@@ -260,87 +260,91 @@ struct FeatureDetailView: View {
     private let secondaryTextColor = Color.gray
 
     var body: some View {
-        ScrollView { // Make content scrollable
-            VStack(alignment: .leading, spacing: 0) { // Use spacing 0 for seamless image/text
-                //MARK: - Image Placeholder
-                Image(feature.imageName)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: size().width, height: 250)
-                    .clipped()
-                     // ---> Matched Geometry ID for Image <---
-                     .matchedGeometryEffect(id: "\(feature.id)_image", in: namespace)
-                     // Add top safe area inset if not using NavigationView bar
-                     .ignoresSafeArea(edges: .top)
-
-
-                //MARK: - Text Content Area
-                VStack(alignment: .leading, spacing: 15) {
-                    Text(feature.title)
-                        .font(.title) // Larger title
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                         // ---> Matched Geometry ID for Title <---
-                       //  .matchedGeometryEffect(id: "\(feature.id)_title", in: namespace)
-
-                    Text(feature.subtitle) // Display subtitle again for context if needed
-                         .font(.callout)
-                         .foregroundColor(secondaryTextColor)
-                         // ---> Matched Geometry ID for Subtitle <---
-                       //  .matchedGeometryEffect(id: "\(feature.id)_subtitle", in: namespace)
-
-                    // Divider or spacing
-                    Rectangle()
-                         .fill(Color.gray.opacity(0.3))
-                         .frame(height: 1)
-                         .padding(.vertical, 10)
-
-                    // Detailed Content
-                    Text(feature.detailedContent)
-                        .font(.body)
-                        .foregroundColor(.white.opacity(0.85))
-                        .lineSpacing(5) // Improve readability
-
-                    Spacer() // Push content up if scroll view has extra space
-
-                }
-                .padding() // Add padding around the text content
-                .padding(.bottom, 60) // Add padding at the bottom to avoid close button overlap
-
-            } // End Main VStack
-        } // End ScrollView
-        // Apply background to the ScrollView content if needed, or ZStack behind it
-         .background(detailBackgroundColor.ignoresSafeArea())
-         // ---> Matched Geometry ID for Card Background <---
-         // Apply to the background of the main container for smooth transition
-         .background(
-              Rectangle()
-                  .fill(detailBackgroundColor) // Match the detail background color
-                  .matchedGeometryEffect(id: "\(feature.id)_card", in: namespace)
-                  .ignoresSafeArea() // Ensure background covers whole area
-         )
-        .overlay(alignment: .topTrailing) {
-             //MARK: - Close Button
-            VStack {
-                Button {
-                    withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.8, blendDuration: 0.8)) {
-                        showDetail = false // Dismiss the detail view
+        if #available(iOS 15.0, *) {
+            ScrollView { // Make content scrollable
+                VStack(alignment: .leading, spacing: 0) { // Use spacing 0 for seamless image/text
+                    //MARK: - Image Placeholder
+                    Image(feature.imageName)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: size().width, height: 250)
+                        .clipped()
+                    // ---> Matched Geometry ID for Image <---
+                        .matchedGeometryEffect(id: "\(feature.id)_image", in: namespace)
+                    // Add top safe area inset if not using NavigationView bar
+                        .ignoresSafeArea(edges: .top)
+                    
+                    
+                    //MARK: - Text Content Area
+                    VStack(alignment: .leading, spacing: 15) {
+                        Text(feature.title)
+                            .font(.title) // Larger title
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        // ---> Matched Geometry ID for Title <---
+                        //  .matchedGeometryEffect(id: "\(feature.id)_title", in: namespace)
+                        
+                        Text(feature.subtitle) // Display subtitle again for context if needed
+                            .font(.callout)
+                            .foregroundColor(secondaryTextColor)
+                        // ---> Matched Geometry ID for Subtitle <---
+                        //  .matchedGeometryEffect(id: "\(feature.id)_subtitle", in: namespace)
+                        
+                        // Divider or spacing
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(height: 1)
+                            .padding(.vertical, 10)
+                        
+                        // Detailed Content
+                        Text(feature.detailedContent)
+                            .font(.body)
+                            .foregroundColor(.white.opacity(0.85))
+                            .lineSpacing(5) // Improve readability
+                        
+                        Spacer() // Push content up if scroll view has extra space
+                        
                     }
-                } label: {
-                    Image(systemName: "xmark")
-                        .font(.title2.weight(.medium))
-                        .foregroundColor(.white)
-                        .padding(12)
-                        .background(Color.black.opacity(0.5))
-                        .clipShape(Circle())
-                }
-                .padding()
-                
-                Spacer()
-            }// Add padding to the button itself
-            // .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0) // Adjust for safe area
-        }
-         .preferredColorScheme(.dark)
-         .statusBar(hidden: true) // Optionally hide status bar in detail view
+                    .padding() // Add padding around the text content
+                    .padding(.bottom, 60) // Add padding at the bottom to avoid close button overlap
+                    
+                } // End Main VStack
+            } // End ScrollView
+            // Apply background to the ScrollView content if needed, or ZStack behind it
+            .background(detailBackgroundColor.ignoresSafeArea())
+            // ---> Matched Geometry ID for Card Background <---
+            // Apply to the background of the main container for smooth transition
+            .background(
+                Rectangle()
+                    .fill(detailBackgroundColor) // Match the detail background color
+                    .matchedGeometryEffect(id: "\(feature.id)_card", in: namespace)
+                    .ignoresSafeArea() // Ensure background covers whole area
+            )
+            .overlay(alignment: .topTrailing) {
+                //MARK: - Close Button
+                VStack {
+                    Button {
+                        withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.8, blendDuration: 0.8)) {
+                            showDetail = false // Dismiss the detail view
+                        }
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.title2.weight(.medium))
+                            .foregroundColor(.white)
+                            .padding(12)
+                            .background(Color.black.opacity(0.5))
+                            .clipShape(Circle())
+                    }
+                    .padding()
+                    
+                    Spacer()
+                }// Add padding to the button itself
+                // .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0) // Adjust for safe area
+            }
+            .preferredColorScheme(.dark)
+            .statusBar(hidden: true)
+        } else {
+            // Fallback on earlier versions
+        } // Optionally hide status bar in detail view
     }
 }

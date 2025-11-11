@@ -9,6 +9,7 @@
 import SwiftUI
 
 //MARK: - Personalization Page (New Page before Ready To Start)
+@available(iOS 15.0, *)
 struct PersonalizationPageView: View {
     let page: OnboardingPage // We might use title/desc later
     let accentColor: Color
@@ -190,18 +191,5 @@ struct SelectableButton: View {
                         .stroke(isSelected ? accentColor : Color.gray.opacity(0.5), lineWidth: 1)
                 )
         }
-    }
-}
-
-// Add a Preview Provider if needed
-struct PersonalizationPageView_Previews: PreviewProvider {
-    static var previews: some View {
-        PersonalizationPageView(
-            page: OnboardingPage(imageName: nil, title: "Tell Us About You", description: "Personalize..."),
-            accentColor: Color(red: 0.22, green: 0.85, blue: 0.32)
-        )
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(red: 34/255, green: 34/255, blue: 34/255))
-        .preferredColorScheme(.dark)
     }
 }

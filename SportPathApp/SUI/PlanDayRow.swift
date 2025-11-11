@@ -53,32 +53,40 @@ struct PlanDayRow: View {
 
              // Show DatePicker conditionally below the date text
              if showDatePicker {
-                  DatePicker(
-                       "",
-                       selection: $entry.date,
-                       displayedComponents: [.date]
-                  )
-                  .datePickerStyle(.graphical) // Use graphical style for better UX
-                  .labelsHidden()
-                  .onChange(of: entry.date) { newDate in
-                       updateDateAction(newDate) // Call the update action in ViewModel
-                       // Optional: Automatically hide picker after selection
-                       // showDatePicker = false
-                  }
-                  .padding(.horizontal, -10) // Adjust padding to align picker nicely
-                  .tint(accentColor) // Color the picker elements
+                 if #available(iOS 16.0, *) {
+                     DatePicker(
+                        "",
+                        selection: $entry.date,
+                        displayedComponents: [.date]
+                     )
+                     .datePickerStyle(.graphical) // Use graphical style for better UX
+                     .labelsHidden()
+                     .onChange(of: entry.date) { newDate in
+                         updateDateAction(newDate) // Call the update action in ViewModel
+                         // Optional: Automatically hide picker after selection
+                         // showDatePicker = false
+                     }
+                     .padding(.horizontal, -10) // Adjust padding to align picker nicely
+                     .tint(accentColor)
+                 } else {
+                     // Fallback on earlier versions
+                 } // Color the picker elements
              }
 
 
             ZStack(alignment: .topLeading) {
-                TextEditor(text: $entry.taskDescription)
-                    .scrollContentBackground(.hidden) // Use this for clear background
-                    .foregroundColor(.white)
-                    .frame(minHeight: 60) // Ensure decent height
-                    .padding(8)
-                    .background(cardBackgroundColor) // Background applied here
-                    .cornerRadius(10)
-                    .tint(accentColor) // Set cursor/highlight color
+                if #available(iOS 16.0, *) {
+                    TextEditor(text: $entry.taskDescription)
+                        .scrollContentBackground(.hidden) // Use this for clear background
+                        .foregroundColor(.white)
+                        .frame(minHeight: 60) // Ensure decent height
+                        .padding(8)
+                        .background(cardBackgroundColor) // Background applied here
+                        .cornerRadius(10)
+                        .tint(accentColor)
+                } else {
+                    // Fallback on earlier versions
+                } // Set cursor/highlight color
 
                  if entry.taskDescription.isEmpty {
                     Text(taskPlaceholder)

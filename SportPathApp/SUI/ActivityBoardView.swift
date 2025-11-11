@@ -56,13 +56,17 @@ struct ActivityBoardView: View {
             Button {
                 viewModel.handleMarkWorkoutTap()
             } label: {
-                Label(viewModel.todaysWorkout != nil ? "Workout Logged Today" : "Mark Workout",
-                      systemImage: viewModel.todaysWorkout != nil ? "checkmark.circle.fill" : "plus")
+                if #available(iOS 16.0, *) {
+                    Label(viewModel.todaysWorkout != nil ? "Workout Logged Today" : "Mark Workout",
+                          systemImage: viewModel.todaysWorkout != nil ? "checkmark.circle.fill" : "plus")
                     .font(.headline).fontWeight(.semibold)
                     .foregroundColor(viewModel.todaysWorkout != nil ? .white.opacity(0.7) : .black)
                     .frame(maxWidth: .infinity).padding()
                     .background(viewModel.todaysWorkout != nil ? Color.gray.opacity(0.5) : accentColor)
                     .cornerRadius(12)
+                } else {
+                    // Fallback on earlier versions
+                }
             }
             .disabled(viewModel.todaysWorkout != nil)
         }

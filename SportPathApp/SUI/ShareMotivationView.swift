@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 16.0, *)
 struct ShareMotivationView: View {
     @Binding var isPresented: Bool // To dismiss the sheet
     @State private var message: String = ""

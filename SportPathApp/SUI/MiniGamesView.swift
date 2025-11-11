@@ -11,63 +11,67 @@ struct MiniGamesView: View {
     @State private var mentalScore: Int = 72
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                HStack {
-                    Text("Relax Mini Games")
-                        .font(.largeTitle).fontWeight(.bold).foregroundColor(.white)
-                    Spacer()
-                }
-                .padding(.horizontal).padding(.top)
-                
-                VStack(spacing: 20) {
-                  
-
-                    Text("Challenge yourself and stay sharp between workouts!")
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(ColorTheme.textSecondary)
-                        .padding(.horizontal)
-
-                    GameCard(title: "Tap Trainer", description: "Tap the glowing block!", emoji: "👟", destination: TapTrainerGame())
-                    GameCard(title: "Reflex Tap", description: "Tap when the light turns green!", emoji: "⚡️", destination: ColorSwapTapGame())
-                    GameCard(title: "Quiz Blitz", description: "Answer 3 sport questions!", emoji: "🧠", destination: QuizGame())
-
-                    Divider().padding(.top)
-
-                    // Mental health info in English
-                    VStack(spacing: 12) {
-                        Text("🧘 Mental Health Matters")
-                            .font(.title2)
-                            .bold()
-                            .foregroundColor(ColorTheme.textPrimary)
-
-                        CircularProgress(percentage: Double(mentalScore))
-                            .frame(width: 140, height: 140)
-                            .padding(.vertical)
-                        
-                        Text("In addition to improving physical condition, it’s important not to forget about mental health. These mini-games also help train concentration, focus, and reaction speed.")
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(ColorTheme.textSecondary)
-                            .padding(.horizontal)
-
-                        Text("🧪 According to a Stanford University study:")
-                            .font(.subheadline)
-                            .foregroundColor(ColorTheme.textSecondary)
-
-                        Text("Completing mini-games improves mental well-being in \(mentalScore)% of users.")
-                            .font(.subheadline)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(ColorTheme.textSecondary)
-                            .padding(.horizontal)
+        if #available(iOS 15.0, *) {
+            NavigationView {
+                ScrollView {
+                    HStack {
+                        Text("Relax Mini Games")
+                            .font(.largeTitle).fontWeight(.bold).foregroundColor(.white)
+                        Spacer()
                     }
-                    .padding(.top)
+                    .padding(.horizontal).padding(.top)
+                    
+                    VStack(spacing: 20) {
+                        
+                        
+                        Text("Challenge yourself and stay sharp between workouts!")
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(ColorTheme.textSecondary)
+                            .padding(.horizontal)
+                        
+                        GameCard(title: "Tap Trainer", description: "Tap the glowing block!", emoji: "👟", destination: TapTrainerGame())
+                        GameCard(title: "Reflex Tap", description: "Tap when the light turns green!", emoji: "⚡️", destination: ColorSwapTapGame())
+                        GameCard(title: "Quiz Blitz", description: "Answer 3 sport questions!", emoji: "🧠", destination: QuizGame())
+                        
+                        Divider().padding(.top)
+                        
+                        // Mental health info in English
+                        VStack(spacing: 12) {
+                            Text("🧘 Mental Health Matters")
+                                .font(.title2)
+                                .bold()
+                                .foregroundColor(ColorTheme.textPrimary)
+                            
+                            CircularProgress(percentage: Double(mentalScore))
+                                .frame(width: 140, height: 140)
+                                .padding(.vertical)
+                            
+                            Text("In addition to improving physical condition, it’s important not to forget about mental health. These mini-games also help train concentration, focus, and reaction speed.")
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(ColorTheme.textSecondary)
+                                .padding(.horizontal)
+                            
+                            Text("🧪 According to a Stanford University study:")
+                                .font(.subheadline)
+                                .foregroundColor(ColorTheme.textSecondary)
+                            
+                            Text("Completing mini-games improves mental well-being in \(mentalScore)% of users.")
+                                .font(.subheadline)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(ColorTheme.textSecondary)
+                                .padding(.horizontal)
+                        }
+                        .padding(.top)
+                    }
+                    .padding()
                 }
-                .padding()
+                .background(ColorTheme.background.ignoresSafeArea())
+                .navigationBarHidden(true)
             }
-            .background(ColorTheme.background.ignoresSafeArea())
-            .navigationBarHidden(true)
+            .tint(.white)
+        } else {
+            // Fallback on earlier versions
         }
-        .tint(.white)
     }
 }
 

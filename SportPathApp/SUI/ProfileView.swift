@@ -88,10 +88,14 @@ struct ProfileView: View {
                     
                     //MARK: - Settings Button
                     Button { showingSettings = true } label: {
-                        Label("Settings", systemImage: "gearshape.fill")
-                        /* ... styling ... */
-                            .font(.headline).fontWeight(.semibold).foregroundColor(.white)
-                            .frame(maxWidth: .infinity).padding().background(cardBackgroundColor).cornerRadius(12)
+                        if #available(iOS 16.0, *) {
+                            Label("Settings", systemImage: "gearshape.fill")
+                            /* ... styling ... */
+                                .font(.headline).fontWeight(.semibold).foregroundColor(.white)
+                                .frame(maxWidth: .infinity).padding().background(cardBackgroundColor).cornerRadius(12)
+                        } else {
+                            // Fallback on earlier versions
+                        }
                     }
                     .padding(.horizontal).padding(.bottom, 20)
                 }
@@ -100,7 +104,11 @@ struct ProfileView: View {
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
             .fullScreenCover(isPresented: $showingSettings) {
-                SettingsView(isPresented: $showingSettings, viewModel: viewModel)
+                if #available(iOS 16.0, *) {
+                    SettingsView(isPresented: $showingSettings, viewModel: viewModel)
+                } else {
+                    // Fallback on earlier versions
+                }
                    
             }
             // ---> Action Sheet for Image Source <---

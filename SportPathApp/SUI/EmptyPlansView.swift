@@ -32,18 +32,22 @@ struct EmptyPlansView: View {
             Button {
                 action()
             } label: {
-                HStack {
-                    Image(systemName: "plus")
-                    Text("Start Training Plan")
+                if #available(iOS 16.0, *) {
+                    HStack {
+                        Image(systemName: "plus")
+                        Text("Start Training Plan")
+                    }
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(accentColor)
+                    .cornerRadius(12)
+                    .multilineTextAlignment(.center)
+                } else {
+                    // Fallback on earlier versions
                 }
-                .font(.headline)
-                .fontWeight(.semibold)
-                .foregroundColor(.black)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(accentColor)
-                .cornerRadius(12)
-                .multilineTextAlignment(.center)
             }
             .padding(.horizontal, 40) // Make button slightly narrower than full width
         }

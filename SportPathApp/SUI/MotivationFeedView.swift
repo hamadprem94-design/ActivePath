@@ -74,7 +74,11 @@ struct MotivationFeedView: View {
                     }
             }
              .sheet(isPresented: $showShareSheet) {
-                ShareMotivationView(isPresented: $showShareSheet)
+                 if #available(iOS 16.0, *) {
+                     ShareMotivationView(isPresented: $showShareSheet)
+                 } else {
+                     // Fallback on earlier versions
+                 }
              }
             .onAppear {
                  // Show onboarding automatically only if not completed

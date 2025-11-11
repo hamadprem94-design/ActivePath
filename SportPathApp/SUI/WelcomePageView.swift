@@ -377,6 +377,7 @@ struct TipsPageView: View {
 //MARK: - Onboarding Container View Block
 
 
+@available(iOS 15.0, *)
 struct OnboardingContainerView: View {
     // Use @AppStorage to skip onboarding next time
     @AppStorage("hasCompletedOnboarding") var hasCompletedOnboarding: Bool = false
@@ -590,11 +591,7 @@ struct OnboardingData {
 //MARK: - Preview Block
 // Onboarding_Previews.swift
 
-struct OnboardingContainerView_Previews: PreviewProvider {
-    static var previews: some View {
-        OnboardingContainerView()
-    }
-}
+ 
 
 // Optional: Preview individual pages
 struct TrackingPageView_Previews: PreviewProvider {

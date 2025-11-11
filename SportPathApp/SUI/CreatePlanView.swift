@@ -26,71 +26,75 @@ struct CreatePlanView: View {
         NavigationView {
             VStack(spacing: 0) { // Use spacing 0 for seamless list
                 // Use List for potential performance benefits and standard row separators
-                List {
-                    // Section for Plan Title
-                    Section {
-                         TextField("Enter Plan Title", text: $viewModel.planTitle)
-                             .listRowBackground(cardBackgroundColor) // Apply background to row
-                             .foregroundColor(.white)
-                             .padding(.vertical, 5) // Add some padding inside the textfield row
-                    } header: {
-                         Text("Plan Name")
-                             .foregroundColor(secondaryTextColor)
-                             .padding(.top) // Add padding above first section header
-                    }
-
-
-                    // Section for Daily Schedule
-                    Section {
-                        ForEach($viewModel.dayEntries) { $entry in
-                            PlanDayRow(
-                                entry: $entry,
-                                dayNumber: (viewModel.dayEntries.firstIndex(where: { $0.id == entry.id }) ?? 0) + 1,
-                                accentColor: accentColor,
-                                secondaryTextColor: secondaryTextColor,
-                                cardBackgroundColor: cardBackgroundColor,
-                                placeholderTextColor: placeholderTextColor,
-                                updateDateAction: { newDate in
-                                    viewModel.updateDate(for: entry.id, newDate: newDate)
-                                }
-                            )
-                            .listRowInsets(EdgeInsets()) // Remove default padding
-                            .listRowSeparator(.hidden) // Hide default separators
-                             .padding(.vertical, 8) // Add custom vertical padding between rows
-                             .listRowBackground(backgroundColor) // Match background
-
-
+                if #available(iOS 16.0, *) {
+                    List {
+                        // Section for Plan Title
+                        Section {
+                            TextField("Enter Plan Title", text: $viewModel.planTitle)
+                                .listRowBackground(cardBackgroundColor) // Apply background to row
+                                .foregroundColor(.white)
+                                .padding(.vertical, 5) // Add some padding inside the textfield row
+                        } header: {
+                            Text("Plan Name")
+                                .foregroundColor(secondaryTextColor)
+                                .padding(.top) // Add padding above first section header
                         }
-                         // Button to Add Day
-                         Button(action: viewModel.addDay) {
-                              Label("Add Day", systemImage: "plus.circle.fill")
-                                  .foregroundColor(accentColor)
-                         }
-                         .listRowBackground(cardBackgroundColor)
-                         .frame(maxWidth: .infinity, alignment: .center)
-                         .padding(.vertical, 5)
-
-
-                    } header: {
-                         Text("Schedule Your Training")
-                             .font(.body) // Use body font matching design
-                             .foregroundColor(secondaryTextColor) // Use subtle color
-                             .fontWeight(.regular)
-                             .textCase(nil) // Remove uppercasing
-                             .padding(.bottom, 5) // Add spacing below header
-                    } footer: {
-                         Text("Plan your daily activities leading up to your competition.")
-                             .font(.caption)
-                              .foregroundColor(secondaryTextColor)
-                              .padding(.bottom) // Add padding below footer
+                        
+                        
+                        // Section for Daily Schedule
+                        Section {
+                            ForEach($viewModel.dayEntries) { $entry in
+                                PlanDayRow(
+                                    entry: $entry,
+                                    dayNumber: (viewModel.dayEntries.firstIndex(where: { $0.id == entry.id }) ?? 0) + 1,
+                                    accentColor: accentColor,
+                                    secondaryTextColor: secondaryTextColor,
+                                    cardBackgroundColor: cardBackgroundColor,
+                                    placeholderTextColor: placeholderTextColor,
+                                    updateDateAction: { newDate in
+                                        viewModel.updateDate(for: entry.id, newDate: newDate)
+                                    }
+                                )
+                                .listRowInsets(EdgeInsets()) // Remove default padding
+                                .listRowSeparator(.hidden) // Hide default separators
+                                .padding(.vertical, 8) // Add custom vertical padding between rows
+                                .listRowBackground(backgroundColor) // Match background
+                                
+                                
+                            }
+                            // Button to Add Day
+                            Button(action: viewModel.addDay) {
+                                Label("Add Day", systemImage: "plus.circle.fill")
+                                    .foregroundColor(accentColor)
+                            }
+                            .listRowBackground(cardBackgroundColor)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.vertical, 5)
+                            
+                            
+                        } header: {
+                            Text("Schedule Your Training")
+                                .font(.body) // Use body font matching design
+                                .foregroundColor(secondaryTextColor) // Use subtle color
+                                .fontWeight(.regular)
+                                .textCase(nil) // Remove uppercasing
+                                .padding(.bottom, 5) // Add spacing below header
+                        } footer: {
+                            Text("Plan your daily activities leading up to your competition.")
+                                .font(.caption)
+                                .foregroundColor(secondaryTextColor)
+                                .padding(.bottom) // Add padding below footer
+                        }
+                        
+                        
                     }
-
-
-                }
-                .listStyle(.plain) // Use plain style to remove default List background/styling
-                 .background(backgroundColor) // Set background for the whole List area
-                 .scrollContentBackground(.hidden) // Needed for List background color
-                 .environment(\.defaultMinListRowHeight, 10) // Adjust row height if necessary
+                    .listStyle(.plain) // Use plain style to remove default List background/styling
+                    .background(backgroundColor) // Set background for the whole List area
+                    .scrollContentBackground(.hidden) // Needed for List background color
+                    .environment(\.defaultMinListRowHeight, 10)
+                } else {
+                    // Fallback on earlier versions
+                } // Adjust row height if necessary
 
 
                  //MARK: - Save Button Area

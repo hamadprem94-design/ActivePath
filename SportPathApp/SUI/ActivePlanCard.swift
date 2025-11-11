@@ -47,9 +47,13 @@ struct ActivePlanCard: View {
             }
 
 
-            ProgressView(value: plan.completionPercentage, total: 100)
-                .tint(accentColor)
-                .scaleEffect(x: 1, y: 1.5, anchor: .center) // Make the bar thicker
+            if #available(iOS 16.0, *) {
+                ProgressView(value: plan.completionPercentage, total: 100)
+                    .tint(accentColor)
+                    .scaleEffect(x: 1, y: 1.5, anchor: .center)
+            } else {
+                // Fallback on earlier versions
+            } // Make the bar thicker
         }
         .padding()
         .background(backgroundColor)

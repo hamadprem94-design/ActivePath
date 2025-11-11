@@ -11,6 +11,7 @@
 import SwiftUI
 import RealmSwift
 
+@available(iOS 16.0, *)
 struct PlanDetailView: View {
     // Observe the specific plan passed to this view
     @ObservedRealmObject var plan: TrainingPlan

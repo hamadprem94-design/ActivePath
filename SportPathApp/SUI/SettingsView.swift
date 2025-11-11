@@ -8,7 +8,7 @@
 import SwiftUI
 import StoreKit
 
-
+@available(iOS 16.0, *)
 struct SettingsView: View {
     
    // @EnvironmentObject var authViewModel: AuthViewModel
@@ -141,6 +141,7 @@ struct SettingsView: View {
 
 //MARK: - Settings Subviews
 
+@available(iOS 16.0, *)
 struct SettingsToggleRow: View {
     let icon: String
     let title: String
@@ -203,12 +204,6 @@ struct SettingsNavigationRow: View {
 }
 
 
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView(isPresented: .constant(true), viewModel: ProfileViewModel())
-            .preferredColorScheme(.dark)
-    }
-}
 
 struct ShareSheet: UIViewControllerRepresentable {
     

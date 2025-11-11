@@ -17,10 +17,14 @@ struct StartingView: View {
         Group {
             MainTabView()
                 .fullScreenCover(isPresented: $isWelcomeShown) {
-                    OnboardingContainerView()
-                        .onDisappear {
-                            UserDefaults.standard.set(true, forKey: "isWelcomeShown")
-                        }
+                    if #available(iOS 15.0, *) {
+                        OnboardingContainerView()
+                            .onDisappear {
+                                UserDefaults.standard.set(true, forKey: "isWelcomeShown")
+                            }
+                    } else {
+                        // Fallback on earlier versions
+                    }
                 }
                 .onAppear {
                     if !UserDefaults.standard.bool(forKey: "isWelcomeShown") {

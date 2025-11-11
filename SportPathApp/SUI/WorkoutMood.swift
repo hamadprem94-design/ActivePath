@@ -55,6 +55,7 @@ import SwiftUI
 
 // Assuming WorkoutMood enum exists as defined previously
 
+@available(iOS 16.0, *)
 struct AddWorkoutView: View {
 
     @State private var workoutDescription: String = ""
@@ -144,16 +145,3 @@ struct AddWorkoutView: View {
     }
 }
 
-
-//MARK: - Previews
-struct AddWorkoutView_Previews: PreviewProvider {
-    static var previews: some View {
-         // Also preview the view itself directly
-         AddWorkoutView(onDismiss: {}, onSave: {_,_,_ in})
-            .padding(30) // Add padding for standalone preview
-            .background(Color.black)
-            .previewLayout(.sizeThatFits)
-            .preferredColorScheme(.dark)
-
-    }
-}

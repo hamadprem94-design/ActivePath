@@ -19,73 +19,77 @@ struct PlansView: View {
     private let secondaryTextColor = Color.gray
     
     var body: some View {
-        NavigationView { // Keep this NavigationView
-            ScrollView {
-                HStack {
-                    Text("Plans")
-                        .font(.largeTitle).fontWeight(.bold).foregroundColor(.white)
-                    Spacer()
-                    if let _ = viewModel.activePlan {
-                        
-                    } else {
-                        Button {
-                            showingCreatePlan = true
-                        } label: {
-                            Image(systemName: "plus.circle.fill")
-                                .font(.title2)
-                                .foregroundColor(accentColor)
+        if #available(iOS 15.0, *) {
+            NavigationView { // Keep this NavigationView
+                ScrollView {
+                    HStack {
+                        Text("Plans")
+                            .font(.largeTitle).fontWeight(.bold).foregroundColor(.white)
+                        Spacer()
+                        if let _ = viewModel.activePlan {
+                            
+                        } else {
+                            Button {
+                                showingCreatePlan = true
+                            } label: {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.title2)
+                                    .foregroundColor(accentColor)
+                            }
                         }
+                        
                     }
+                    .padding(.horizontal).padding(.top)
                     
-                }
-                .padding(.horizontal).padding(.top)
-                
-                VStack(alignment: .leading, spacing: 25) {
-                   
-                    if let plan = viewModel.activePlan {
-                        ActivePlanCard(plan: plan, backgroundColor: cardBackgroundColor, accentColor: accentColor)
-                            .padding(.horizontal)
+                    VStack(alignment: .leading, spacing: 25) {
                         
-                        ThisWeekView(accentColor: accentColor, secondaryTextColor: secondaryTextColor)
-                            .padding(.horizontal)
+                        if let plan = viewModel.activePlan {
+                            ActivePlanCard(plan: plan, backgroundColor: cardBackgroundColor, accentColor: accentColor)
+                                .padding(.horizontal)
+                            
+                            ThisWeekView(accentColor: accentColor, secondaryTextColor: secondaryTextColor)
+                                .padding(.horizontal)
+                            
+                            TodaysActivitiesView(activities: viewModel.todaysActivities, backgroundColor: cardBackgroundColor, accentColor: accentColor)
+                                .padding(.horizontal)
+                            TerminatePlanButton(action: viewModel.terminateActivePlan, accentColor: accentColor)
+                                .padding(.horizontal)
+                        } else {
+                            EmptyPlansView(
+                                backgroundColor: cardBackgroundColor,
+                                accentColor: accentColor,
+                                action: { showingCreatePlan = true }
+                            )
+                            .padding(.horizontal).padding(.top, 50)
+                        }
                         
-                        TodaysActivitiesView(activities: viewModel.todaysActivities, backgroundColor: cardBackgroundColor, accentColor: accentColor)
-                            .padding(.horizontal)
-                        TerminatePlanButton(action: viewModel.terminateActivePlan, accentColor: accentColor)
-                            .padding(.horizontal)
-                    } else {
-                        EmptyPlansView(
+                        
+                        //MARK: - Previous Plans Section (Modified for Navigation)
+                        PreviousPlansSection( // Renamed from PreviousPlansView for clarity
+                            plans: viewModel.previousPlans,
                             backgroundColor: cardBackgroundColor,
-                            accentColor: accentColor,
-                            action: { showingCreatePlan = true }
+                            secondaryTextColor: secondaryTextColor
                         )
-                        .padding(.horizontal).padding(.top, 50)
+                        .padding(.horizontal)
+                        
+                        Spacer(minLength: 20)
                     }
-                    
-                    
-                    //MARK: - Previous Plans Section (Modified for Navigation)
-                    PreviousPlansSection( // Renamed from PreviousPlansView for clarity
-                        plans: viewModel.previousPlans,
-                        backgroundColor: cardBackgroundColor,
-                        secondaryTextColor: secondaryTextColor
-                    )
-                    .padding(.horizontal)
-                    
-                    Spacer(minLength: 20)
+                    .padding(.top)
                 }
-                .padding(.top)
+                .background(backgroundColor.ignoresSafeArea())
+                .sheet(isPresented: $showingCreatePlan) {
+                    CreatePlanView(onSave: { viewModel.updatePublishedPlans() })
+                }
+                .onAppear {
+                    viewModel.updatePublishedPlans()
+                }
+                .preferredColorScheme(.dark)
             }
-            .background(backgroundColor.ignoresSafeArea())
-            .sheet(isPresented: $showingCreatePlan) {
-                CreatePlanView(onSave: { viewModel.updatePublishedPlans() })
-            }
-            .onAppear {
-                viewModel.updatePublishedPlans()
-            }
-            .preferredColorScheme(.dark)
-        }
-        .tint(.white)
-        .navigationViewStyle(.stack) // Use stack style
+            .tint(.white)
+            .navigationViewStyle(.stack)
+        } else {
+            // Fallback on earlier versions
+        } // Use stack style
     }
 }
 
@@ -110,8 +114,12 @@ struct PreviousPlansSection: View {
                         // Ensure plan is valid before creating NavigationLink
                         if !plan.isInvalidated {
                             // ---> WRAP Row in NavigationLink <---
-                            NavigationLink(destination: PlanDetailView(plan: plan)) {
-                                PreviousPlanRow(plan: plan, backgroundColor: backgroundColor, secondaryTextColor: secondaryTextColor)
+                            if #available(iOS 16.0, *) {
+                                NavigationLink(destination: PlanDetailView(plan: plan)) {
+                                    PreviousPlanRow(plan: plan, backgroundColor: backgroundColor, secondaryTextColor: secondaryTextColor)
+                                }
+                            } else {
+                                // Fallback on earlier versions
                             }
                         }
                     }
